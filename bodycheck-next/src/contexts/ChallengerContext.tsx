@@ -1,9 +1,15 @@
-import { createContext, useState, ReactNode } from 'react';
+import {
+  createContext, useState, ReactNode, useEffect,
+} from 'react';
+import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 
 interface ChallengesProviderProps{
   /* ReactNode aceita qualquer elemento filho como children (componente, texto, html) */
   children: ReactNode;
+  level: number;
+  challengesComplete: number;
+  currentExperience: number;
 }
 
 interface Challenge {
@@ -26,14 +32,24 @@ interface challengesContextData {
 }
 export const ChallengerContext = createContext({} as challengesContextData);
 
-export function ChallengesProvider({ children }: ChallengesProviderProps) {
-  const [level, setLevel] = useState(1);
-  const [currentExperience, setCurrentExperience] = useState(0);
-  const [challengesComplete, setChallengesComplete] = useState(0);
+export function ChallengesProvider({ children, ...rest }: ChallengesProviderProps) {
+  const [level, setLevel] = useState(rest.level ?? 1);
+  const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
+  const [challengesComplete, setChallengesComplete] = useState(rest.challengesComplete ?? 0);
 
   const [activeChallenge, setActiveChallenge] = useState(null);
 
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
+
+  useEffect(() => {
+    Notification.requestPermission();
+  }, []);
+
+  useEffect(() => {
+    Cookies.set('level', String(level));
+    Cookies.set('currentExperience', String(currentExperience));
+    Cookies.set('challengesComplete', String(challengesComplete));
+  }, [level, currentExperience, challengesComplete]);
 
   function levelUp() {
     setLevel(level + 1);
@@ -44,6 +60,14 @@ export function ChallengesProvider({ children }: ChallengesProviderProps) {
     const challenge = challenges[randomChallenger];
 
     setActiveChallenge(challenge);
+
+    new Audio('/notification.mp3').play();
+
+    if (Notification.permission === 'granted') {
+      new Notification('Novo desafio', {
+        body: `Valendo ${challenge.amount}xp!`,
+      });
+    }
   }
 
   function resetChallenge() {

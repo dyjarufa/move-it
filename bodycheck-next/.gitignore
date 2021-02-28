@@ -34,4 +34,4 @@ yarn-error.log*
 .vercel
 
 #my note
-/notes_and_tips
+../notes_and_tips/
