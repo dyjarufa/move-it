@@ -4,7 +4,9 @@ import {
 import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 
-interface ChallengesProviderProps{
+import { LevelUpModal } from '../components/LevelUpModal';
+
+interface ChallengesProviderProps {
   /* ReactNode aceita qualquer elemento filho como children (componente, texto, html) */
   children: ReactNode;
   level: number;
@@ -20,7 +22,7 @@ interface Challenge {
 
 interface challengesContextData {
   level: number;
-  currentExperience:number
+  currentExperience: number
   challengesComplete: number;
   levelUp: () => void;
   startNewChallenge: () => void;
@@ -28,16 +30,19 @@ interface challengesContextData {
   resetChallenge: () => void;
   experienceToNextLevel: number;
   completeChallenge: () => void;
+  closeLevelUpModal: () => void;
 
 }
 export const ChallengerContext = createContext({} as challengesContextData);
 
 export function ChallengesProvider({ children, ...rest }: ChallengesProviderProps) {
   const [level, setLevel] = useState(rest.level ?? 1);
+
   const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
   const [challengesComplete, setChallengesComplete] = useState(rest.challengesComplete ?? 0);
-
   const [activeChallenge, setActiveChallenge] = useState(null);
+
+  const [isLEvelUpModalOpen, setIsLEvelUpModalOpen] = useState(false);
 
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
 
@@ -53,6 +58,11 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
 
   function levelUp() {
     setLevel(level + 1);
+    setIsLEvelUpModalOpen(true);
+  }
+
+  function closeLevelUpModal() {
+    setIsLEvelUpModalOpen(false);
   }
 
   function startNewChallenge() {
@@ -105,10 +115,13 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
         resetChallenge,
         experienceToNextLevel,
         completeChallenge,
+        closeLevelUpModal,
 
       }}
     >
       {children}
+      {isLEvelUpModalOpen && <LevelUpModal />}
+
     </ChallengerContext.Provider>
   );
 }

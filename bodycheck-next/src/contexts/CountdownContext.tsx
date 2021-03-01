@@ -24,7 +24,7 @@ let countDownTimeout: NodeJS.Timeout; // identificar o formato do timeout
 export function CountdownProvider({ children } : CountdownProps) {
   const { startNewChallenge } = useContext(ChallengerContext); /* DEPENDENCIA DE OUTRO CONTEXT */
 
-  const [time, setTime] = useState(0.1 * 60); /* 25 min * 60 sec */
+  const [time, setTime] = useState(25 * 60); /* 25 min * 60 sec */
 
   const [isActive, setIsActive] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
