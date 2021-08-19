@@ -1,0 +1,13 @@
+#instalar vercel cli
+yarn global add vercel 
+
+#Pelo yarn é necessário setar o path no ./zshrc(bash que estou usando)
+-acesso ao link para verificar o path:  https://classic.yarnpkg.com/en/docs/cli/global/
+code ~/zshrc
+insiro o path: export PATH="$(yarn global bin)"
+
+#Logar na conta da vercel com cli vercel:
+vercel login
+
+#dentro da pasta do projeto rodar o comando para realizar o deploy da aplicação
+vercel

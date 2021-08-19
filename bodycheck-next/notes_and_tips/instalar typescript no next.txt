@@ -1,0 +1,4 @@
+// Dependências para instalação do TypeScript no Next.js //
+
+ yarn add typescript @types/react @types/react-dom @types/node -D
+

@@ -1,0 +1,13 @@
+__Pasta index: [ o que é exibidoao acessar a aplicação ]
+
+__Pasta _App.js: [é o componente que fica por volta de toda a aplicação(ex: cabeçalho, Sidebar) ]
+
+### Arquivo ###
+
+import '../styles/globals.css'
+
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} /> /* toda arquivo que eu queira compartilhar na aplicação  fica aqui dentro */
+}
+
+export default MyApp
